@@ -19,7 +19,8 @@ for line in sys.stdin:
     else:
         updates.append(list(map(int, line.split(","))))
 
-print(rules)
+for bef in rules.keys():
+    print(bef, "<", rules[bef])
 for update in updates:
     print(update)
 print()
@@ -36,16 +37,23 @@ sum2 = 0
 
 for update in updates:
     update_sorted = sorted(update, key=cmp_to_key(cmp))
-    mid = update_sorted[len(update_sorted)//2]
+    mid = len(update_sorted)//2
+    val = update_sorted[mid]
     correct = True
     for (a, b) in zip(update, update_sorted):
         if a != b:
             correct = False
             break
+    update_sorted = list(map(str, update_sorted))
+    fmt =  ",".join(update_sorted[:mid])
+    fmt += f",\033[31m{update_sorted[mid]}\033[37m,"
+    fmt += ",".join(update_sorted[mid+1:])
     if correct:
-        sum1 += mid
+        print(f"{fmt}")
+        sum1 += val
     else:
-        sum2 += mid
+        print(f"\033[7m{fmt}\033[m")
+        sum2 += val
 
 print(sum1)
 print(sum2)
