@@ -30,9 +30,9 @@ def inside(rc):
 
 def traverse(m, r, c):
     prev = []
+    d = m[r][c]
+    assert(d in "<>v^")
     while True:
-        d = m[r][c]
-        assert(d in "<>v^")
         m[r][c] = "X"
         if d == "^":
             rc = (r-1, c)
@@ -50,20 +50,14 @@ def traverse(m, r, c):
             prev.append((rc[0],rc[1],d))
             if d == "^":
                 d = ">"
-                rc = (r, c+1)
             elif d == ">":
                 d = "v"
-                rc = (r+1, c)
             elif d == "v":
                 d = "<"
-                rc = (r, c-1)
             else: # <
                 d = "^"
-                rc = (r-1, c)
-            if not inside(rc):
-                return False
-        (r, c) = rc
-        m[r][c] = d
+        else:
+            (r, c) = rc
 
 m2 = copy(m)
 traverse(m2, r1, c1)
