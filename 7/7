@@ -1,0 +1,35 @@
+#! /usr/bin/env python3
+
+import sys
+import itertools
+
+eqs = dict()
+
+for line in sys.stdin:
+	(res, ops) = line.strip().split(": ")
+	eqs[int(res)] = list(map(int, ops.split()))
+print(eqs)
+sumok = 0
+for res in eqs:
+    operands = eqs[res]
+    nb_operators = len(operands) - 1
+    print(res, end=": ")
+    for seq in itertools.product("*+", repeat=nb_operators):
+        tstres = operands[0]
+        #print(operands[0], end=" ")
+        i = 0
+        for operator in seq:
+            #print(operator, end=" ")
+            if operator == "*":
+                tstres *= operands[i+1]
+            elif operator == "+":
+                tstres += operands[i+1]
+            #print(operands[i+1], end=" ")
+            i += 1
+        #print()
+        if tstres == res:
+            sumok += res
+            print("ok", end="")
+            break
+    print()
+print(sumok)
