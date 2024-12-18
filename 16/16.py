@@ -74,7 +74,7 @@ def dfs(m):
     backtrack = False
     while positions != []:
         step += 1
-        if step > 5000:
+        if step > 20000:
             printp(positions, mincost)
             step = 0
         #if backtrack:
@@ -116,7 +116,7 @@ def dfs(m):
         cplx = dr + dc*1j
         if turns[last] == 0:
             turns[last] = 1
-            if step % 2 == 0:
+            if True: #step % 2 == 0:
                 turn = cplx * 1j
             else:
                 turn = cplx * -1j
