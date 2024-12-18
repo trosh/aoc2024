@@ -74,7 +74,7 @@ def dfs(m):
     backtrack = False
     while positions != []:
         step += 1
-        if step > 20000:
+        if step > 5000:
             printp(positions, mincost)
             step = 0
         #if backtrack:
@@ -104,7 +104,7 @@ def dfs(m):
             r2, c2 = r+dr, c+dc
             if m[r2][c2] in ".E" \
             and (r2,c2) not in positions \
-            and len(positions) <= minlen[r2][c2]:
+            and len(positions) <= minlen[r2][c2] + 1000:
                 minlen[r2][c2] = len(positions)
                 positions.append((r2,c2))
                 directions.append((dr,dc))
