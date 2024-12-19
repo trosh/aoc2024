@@ -40,6 +40,7 @@ def inside(r, c):
     return 0<=r<R and 0<=c<C
 
 cost = [None] * (R * C * 4)
+prev = dict()
 unvisited = list()
 for r in range(R):
     for c in range(C):
@@ -93,18 +94,43 @@ while cur != []:
             continue
         alt = mincost + extracost
         vid = nodeid(v)
+        if cost[vid] == alt:
+            prev[vid].append(u)
         if cost[vid] > alt:
             cost[vid] = alt
-            if incur:
-                cur.remove(v)
-            elif inunv:
+            prev[vid] = [u]
+            if inunv:
                 unvisited.remove(v)
                 cur.append(v)
-            if r == Er and c == Ec:
-                print(v, alt)
     niter += 1
-print("\033[m")
+print("\033[31m", end="")
 
+mincost = math.inf
 for dr, dc in ids:
     v = (Er, Ec, dr, dc)
-    print(v, cost[nodeid(v)])
+    c = cost[nodeid(v)]
+    #print(v, c)
+    if mincost > c:
+        mincost = c
+        u = v
+ntiles_on_best_paths = 0
+seen = [[False] * C for _ in range(R)]
+todo = [u]
+while todo != []:
+    cur = todo
+    todo = []
+    for u in cur:
+        r, c, dr, dc = u
+        if not seen[r][c]:
+            seen[r][c] = True
+            ntiles_on_best_paths += 1
+        print(f"\033[{r+1};{2*c+1}H  ", end="")
+        sys.stdout.flush()
+        uid = nodeid(u)
+        if uid not in prev:
+            continue
+        for v in prev[uid]:
+            todo.append(v)
+print(f"\033[m\033[{R+1};1H")
+print("mincost:", mincost)
+print("nb tiles on best paths:", ntiles_on_best_paths)
